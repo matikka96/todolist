@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TODO LIST</title>
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest_ios.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+	<div id="app" class="">
+		<div id="header">
+			<nav>
+				<div class="nav-wrapper blue darken-4">
+					<div class="row">
+						<div class="col s12">
+							<a href="https://www.tikka.top/stuff/todolist/" class="brand-logo center">TODO list</a>
+							<a class="waves-effect waves-light btn blue darken-3" href="/auth/logout">logout</a>
+						</div>
+					</div>
+				</div>
+			</nav>
+			<ul id="tabs-swipe" class="tabs center z-depth-1">
+				<li class="tab active"><a href="#tab-tasks">tasks</a></li>
+			  	<li class="tab"><a href="#tab-completed">Completed</a></li>
+			</ul>
+		</div>
+		<div class="white container">
+			<div id="tab-tasks">
+				    <div class="input-field">
+				        <input onfocus="this.value=''" v-model="itemName" placeholder="What to add?" @keydown.enter="addToList()">
+				    </div>
+				<div class="collection">
+					<uncompleted
+						v-for="(item, index) in items"
+						v-if="!item.done"
+						v-bind:text="item.text"
+						v-bind:done="item.done"
+						v-bind:index="index"
+						v-bind:id="item._id"
+						v-on:act-remove="removeFromList"
+						v-on:act-update="updateStatus"
+					></uncompleted>
+				</div>
+			</div>
+			<div id="tab-completed">
+				<div class="collection">
+					<completed
+					v-for="(item, index) in items"
+					v-if="item.done"
+					v-bind:text="item.text"
+					v-bind:done="item.done"
+					v-bind:index="index"
+					v-bind:id="item._id"
+					v-on:act-remove="removeFromList"
+					v-on:act-update="updateStatus"
+					></completed>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+<!-- Materialize initializatin -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          $('.tabs').tabs({
+          	// swipeable : true
+          });
+        });
+    </script>
+
+<!-- Import Axios -->
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<!-- Vue starts here! --> 
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+	<script>
+		Vue.component('uncompleted', {
+			props: ['text', 'done', 'index', 'id'],
+			template: `
+				<div class="collection-item valign-wrapper row">
+					<label class="valign-wrapper col s10">
+						<i class="material-icons black-text left" v-on:click="$emit('act-update', {id, done})">check_box_outline_blank</i>						
+				        <span>{{text}}</span>
+				    </label>
+					<i v-on:click="$emit('act-remove', text)" class=" right-align material-icons red-text col s2">close</i>
+				</div>
+			`
+		})
+		Vue.component('completed', {
+			props: ['text', 'done', 'index', 'id'],
+			template: `
+				<div class="collection-item valign-wrapper row">
+					<label class="valign-wrapper col s10">
+						<i class="material-icons black-text left" v-on:click="$emit('act-update', {id, done})">check</i>						
+				        <span>{{text}}</span>
+				    </label>
+					<i v-on:click="$emit('act-remove', text)" class=" right-align material-icons red-text col s2">close</i>
+				</div>
+			`
+		})
+		let app = new Vue({
+			el: '#app',
+			data: {
+				itemName: '',
+				showCompleted: true,
+				items: []
+			},
+			methods: {
+				addToList() {
+					if (this.itemName == '') {
+						alert("Please enter something");
+						this.itemName = '';
+						return;
+					} 
+					else {
+						axios.post('/profile/add', {text : app.itemName})
+						.then(function (response) {
+							app.itemName = '';
+							app.loadData();
+						})
+						.catch(function (error) {
+							console.log(error);
+						});
+					}
+				},
+				removeFromList(index) {
+					console.log(index);
+					axios.post('/profile/delete', {text : index})
+						.then(function (response) {
+					    	app.loadData();
+					  	}).catch((error) => {
+					    	console.log(error);
+					  });
+				},
+				updateStatus(index) {
+					axios.post('/profile/update', {taskID : index.id, done: !index.done})
+					  .then(function (response) {
+					    app.loadData();
+					  })
+					  .catch((error) => {
+					    console.log(error);
+					  });
+
+
+				},
+				loadData() {
+					M.toast({html: '<i class="material-icons medium">sync</i>', inDuration: '0'})
+					axios.get('/profile/load')
+						.then((response) => {
+							if (response.data == 'login') {
+								window.location.replace('/login');
+							} else {
+								app.items = [];
+							    for (var i = 0; i < response.data.length; i++) {
+									app.items.push(response.data[i]);
+							    }
+							}
+
+					  }).then(() => {
+					  		M.Toast.dismissAll();
+					  })
+					  .catch((error) => {
+					    console.log(error);
+					  })
+				}
+			},
+			mounted() {
+				console.log("App mounted")
+				this.loadData();
+			}
+		})
+	</script>
+</body>
+
+</html>
