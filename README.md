@@ -51,7 +51,7 @@ Now your app is seen here: http://localhost:3000
 
 **Method 2 – Clone from Github**
 
-Clone package from github. Install packages with 
+Clone repository from github. Install packages with 
 COMMAND:
 ```
 npm install
