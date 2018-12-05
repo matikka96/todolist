@@ -39,7 +39,7 @@ There are two easy ways to get this application up and running.
 Download project from Github and build it in Docker. 
 COMMAND: 
 ```
-docker build -t todolistserver https://github.com/matikka96/todolist-mongodb-axios.git
+docker build -t todolistserver https://github.com/matikka96/todolist-vko10.git
 ```
 This will create docker image named "todolistserver".
 Final step is to run above image. 
