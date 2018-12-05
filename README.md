@@ -8,6 +8,7 @@ Vuejs has been used for reactive list rendering and materializecss for the overa
 
 ### Back-end
 Server is running on node with the help of expressjs. Mongodb is used as a database, with use of mongoose package. Google account authentication is running on passportjs package.
+![Screenshot](https://github.com/matikka96/todolist-mongodb-axios/blob/master/screenshot.png)
 
 ## Configuration
 All the configuration is done in *./config/keys.js* This is how the file looks like:
