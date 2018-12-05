@@ -37,18 +37,18 @@ There are two easy ways to get this application up and running.
 **Method 1 – using Docker** (Temporary for school use only for security reasons)
 Download project from Github and build it in Docker. 
 COMMAND: 
-> docker build -t todolistserver https://github.com/matikka96/todolist-mongodb-axios.git
+```docker build -t todolistserver https://github.com/matikka96/todolist-mongodb-axios.git```
 This will create docker image named "todolistserver".
 Final step is to run above image. 
 COMMAND: 
-> docker run -p 3000:3000 -d todolistserver
+```docker run -p 3000:3000 -d todolistserver```
 Now your app is seen here: http://localhost:3000
 
 **Method 2 – Clone from Github**
 Clone package from github. Install packages with 
 COMMAND:
-> npm install
+```npm install```
 And finally run with 
 COMMAND:
-> node server.js
+```node server.js```
 Now your app is seen here: http://localhost:3000
