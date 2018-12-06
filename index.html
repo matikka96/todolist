@@ -20,8 +20,12 @@
 				<div class="nav-wrapper blue darken-4">
 					<div class="row">
 						<div class="col s12">
-							<a href="https://www.tikka.top/stuff/todolist/" class="brand-logo center">TODO list</a>
-							<a class="waves-effect waves-light btn blue darken-3" href="/auth/logout">logout</a>
+							<a href="#" class="brand-logo center">TODO list</a>
+							<i class="material-icons dropdown-trigger right" data-target='dropdown1'>more_horiz</i>
+						  	<ul id='dropdown1' class='dropdown-content'>
+							    <li><a href="/auth/logout" class="black-text">Logout</a></li>
+							    <li><a href="https://github.com/matikka96" class="black-text">Github</a></li>
+						  	</ul>
 						</div>
 					</div>
 				</div>
@@ -72,10 +76,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         $(document).ready(function(){
-          $('.tabs').tabs({
-          	// swipeable : true
-          });
+          $('.tabs').tabs();
+          $('.dropdown-trigger').dropdown();
         });
+
     </script>
 
 <!-- Import Axios -->
@@ -118,7 +122,7 @@
 			methods: {
 				addToList() {
 					if (this.itemName == '') {
-						alert("Please enter something");
+						M.toast({html: 'Please enter something'})
 						this.itemName = '';
 						return;
 					} 
