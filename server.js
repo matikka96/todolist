@@ -14,7 +14,7 @@ const keys = require('./config/keys');
 const cookieSession = require('cookie-session');
 
 
-app.use(express.static(__dirname + '/'));
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -38,17 +38,17 @@ app.use('/profile', profileRoutes);
 
 // Main page, logs database result
 app.get('/', (req, res) => {
-	// res.sendFile(__dirname + '/test.html');		// test app
-	res.sendFile(__dirname + '/index.html');	// Todo app
+	// res.sendFile(__dirname + '/test.html');
+	res.sendFile(__dirname + '/public/index.html');
 });
 
 app.get('/login', (req, res) => {
 	if (req.user) {
 		// If signed in
-		res.sendFile(__dirname + '/index.html');
+		res.sendFile(__dirname + '/public/index.html');
 	} else {
 		// If not signed in
-		res.sendFile(__dirname + '/login.html');
+		res.sendFile(__dirname + '/public/login.html');
 	}
 
 });
