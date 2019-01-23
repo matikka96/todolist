@@ -10,5 +10,8 @@ module.exports = {
 	},
 	session: {
 		cookieKey: ''
-	}
+	},
+	client: {
+		url: ''
+	},
 };
