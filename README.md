@@ -1,5 +1,7 @@
 # TODO list APP
 
+![Screenshot](https://github.com/matikka96/todolist-vko10/blob/master/screenshot.png?raw=true)
+
 Made originally as an assigment for university course "www-programming".
 
 This is a basic CRUD todo app. Account creation process has been introduced using Google authentication. 
@@ -10,7 +12,6 @@ Vue.js has been used for reactive list rendering and materializecss for the over
 
 ### Back-end
 Server is running on node with the help of express.js. Mongodb is used as a database, with use of mongoose package. Google account authentication is running on passport.js package.
-![Screenshot](https://github.com/matikka96/todolist-vko10/blob/master/screenshot.png?raw=true)
 
 ## Configuration
 All the configuration is done in `/config/keysTemplate.js` This is how the file looks like:
